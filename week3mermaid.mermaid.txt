@@ -1,0 +1,59 @@
+erDiagram 
+    Teams {
+    INT_UNSIGNED TeamID PK
+    VARCHAR(100) TeamName
+    VARCHAR(100) TeamCountry
+    INT_UNSIGNED CoachID FK "Foreign key to Coach"
+    }
+    Player {
+    INT_UNSIGNED PlayerID PK
+    VARCHAR(100) FirstName
+    VARCHAR(100) LastName
+    DATETIME DateOfBirth
+    VARCHAR(100) Nationality
+    }
+    Match {
+    INT_UNSIGNED MatchID PK
+    DATETIME MatchDate
+    VARCHAR(100) Venue
+    INT_UNSIGNED Result
+    }
+    Tournament {
+    INT_UNSIGNED TournamentID PK
+    VARCHAR(100) TournamentName
+    DATETIME StartDate
+    DATETIME EndDate
+    INT_UNSIGNED MatchID FK "Foreign key to Match"
+    }
+    Coach {
+    INT_UNSIGNED CoachID PK
+    VARCHAR(100) FirstName
+    VARCHAR(100) LastName
+    INT_UNSIGNED CoachingExperienceYears
+    }
+    PlayerTeamMatch {
+    INT_UNSIGNED PlayerID PK,FK "Foreign key to Player"
+    INT_UNSIGNED MatchID PK, FK "Foreign key to Match"
+    INT_UNSIGNED TeamID PK, FK "Foreign key to Teams"
+    }
+    PlayerSkills {
+    INT_UNSIGNED SkillID PK
+    VARCHAR(100) SkillName
+    }
+    PlayerSkillsPlayer {
+    INT_UNSIGNED PlayerID PK, FK "Foreign key to Player"
+    INT_UNSIGNED SkillID PK, FK "Foreign key to PlayerSkills"
+    }
+    TeamTournament {
+    INT_UNSIGNED TeamID PK,FK "Foreign key to Teams"
+    INT_UNSIGNED TournamentID PK, FK "Foreign key to Tournament"
+    }
+    Match ||--o{ Tournament : " belongs to"
+    Player |o--o{ PlayerTeamMatch : "Competes"
+    Teams ||--o{ PlayerTeamMatch : "Competes"
+    Match ||--o{ PlayerTeamMatch : "Competes"
+    Teams ||--|o Coach : " Manages "
+    PlayerSkills |o--o{ PlayerSkillsPlayer : "has"
+    Player ||--o{ PlayerSkillsPlayer : "has"
+    Tournament |o--o{ TeamTournament : participate
+
